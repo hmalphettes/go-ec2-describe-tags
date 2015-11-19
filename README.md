@@ -1,13 +1,17 @@
 AWS ec2-describe-tags as a standalone executable
 ================================================
 Written in golang.
+
 Precompiled binary for Linux fully linked and executable on any x86 Linux distro including Alpine Linux.
-Precompiled binary for MacOSX.
+
+Precompiled binary for MacOSX
+
+https://github.com/hmalphettes/go-ec2-describe-tags/releases
 
 Motivation
 ==========
 Need to populate fleet's metadata with the instance tags.
-As a consequence:
+
 - curl and bash are not enough to read tags
 - Can't install python and awscli on CoreOS
 - Cant wait for Docker to be ready and run a containerised awscli
@@ -35,6 +39,7 @@ Environment variables for default values:
 
 Usage on an EC2 instance
 ========================
+When executed on an EC2 instance the flag `-query_meta=true` will query the metadata service to discover the `region` and `instance_id`:
 ```
 wget https://github.com/hmalphettes/go-ec2-describe-tags/releases/download/v0.0.1/go-ec2-describe-tags
 chmod +x go-ec2-describe-tags
