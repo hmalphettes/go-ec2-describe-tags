@@ -25,12 +25,12 @@ wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../go-ec2-desc
 
 chmod +x go-ec2-describe-tags
 
-./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz
+./go-ec2-describe-tags -access_key=XXX -secret_access_key=YYYYY -region=us-east-1 -instance_id=zzzzzz
 Name=testing
 foo=bar
 
 # specify the delimiters
-./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz -kv_delim='->' -p_delim=';'
+./go-ec2-describe-tags -access_key=XXX -secret_access_key=YYYYY -region=us-east-1 -instance_id=zzzzzz -kv_delim='->' -p_delim=';'
 Name->testing;foo=bar
 ```
 
@@ -45,6 +45,6 @@ When executed on an EC2 instance the flag `-query_meta=true` will query the meta
 ```
 wget https://github.com/hmalphettes/go-ec2-describe-tags/releases/download/v0.0.1/go-ec2-describe-tags
 chmod +x go-ec2-describe-tags
-./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -query_meta=true -p_delim=,
+./go-ec2-describe-tags -access_key=XXX -secret_access_key=YYYYY -query_meta=true -p_delim=,
 Name=testing,foo=bar
 ```
