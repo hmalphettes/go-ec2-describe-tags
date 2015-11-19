@@ -4,6 +4,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -12,7 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go/service/ec2"
 )
 
-/*func get(url string) (string, error) {
+func get(url string) (string, error) {
 	response, err := http.Get(url)
 	if err != nil {
 		return "", err
@@ -23,7 +25,7 @@ import (
 		return "", err
 	}
 	return string(contents), nil
-}*/
+}
 
 func main() {
 
@@ -32,16 +34,18 @@ func main() {
 	var region = os.Getenv("AWS_REGION")
 	var instanceID = os.Getenv("EC2_INSTANCE_ID")
 	var delim = "="
+	var queryMetadata = false
 
 	flag.StringVar(&awsAccessKey, "access_key", awsAccessKey, "AWS Access Key")
 	flag.StringVar(&awsSecretAccessKey, "secret_access_key", awsSecretAccessKey, "AWS Secret Access Key")
 	flag.StringVar(&region, "region", region, "AWS Region identifier")
 	flag.StringVar(&instanceID, "instance_id", instanceID, "EC2 instance id")
 	flag.StringVar(&delim, "delim", delim, "delimiter between key=value")
+	flag.BoolVar(&queryMetadata, "query_meta", queryMetadata, "query metadata service for instance_id and region")
 
 	flag.Parse()
 
-	/*if region == "" {
+	if queryMetadata && region == "" {
 		resp, err := get("http://169.254.169.254/latest/meta-data/placement/availability-zone")
 		if err != nil {
 			fmt.Printf("%s", err)
@@ -51,14 +55,14 @@ func main() {
 		region = resp[:sz-1]
 	}
 
-	if instanceID == "" {
+	if queryMetadata && instanceID == "" {
 		resp, err := get("http://169.254.169.254/latest/meta-data/instance-id")
 		if err != nil {
 			fmt.Printf("%s", err)
 			os.Exit(1)
 		}
 		instanceID = resp
-	}*/
+	}
 
 	creds := credentials.NewStaticCredentials(awsAccessKey, awsSecretAccessKey, "")
 
