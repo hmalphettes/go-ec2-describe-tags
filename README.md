@@ -23,6 +23,8 @@ Usage
 wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../go-ec2-describe-tags
 # wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../go-ec2-describe-tags-macos
 
+chmod +x go-ec2-describe-tags
+
 ./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz
 Name=testing
 foo=bar
