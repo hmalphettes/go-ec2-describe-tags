@@ -16,13 +16,28 @@ As a consequence:
 Usage
 =====
 ```
-wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../ec2_describe_tags
-# wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../ec2_describe_tags_macos
+wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../go-ec2-describe-tags
+# wget https://github.com/hmalphettes/go_ec2_describe_tags/release/.../go-ec2-describe-tags-macos
 
-ec2_describe_tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz
+./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz
 Name=testing
+foo=bar
+
+# specify the delimiters
+./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -region=us-east-1 -instance_id=zzzzzz -kv_delim='->' -p_delim=';'
+Name->testing;foo=bar
 ```
+
 
 Environment variables for default values:
 - Access key and secret key defaults to environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
 - Region default to the environment variable `AWS_REGION`
+
+Usage on an EC2 instance
+========================
+```
+wget https://github.com/hmalphettes/go-ec2-describe-tags/releases/download/v0.0.1/go-ec2-describe-tags
+chmod +x go-ec2-describe-tags
+./go-ec2-describe-tags -access_key=XXX -access_secret_key=YYYYY -query_meta=true -p_delim=,
+Name=testing,foo=bar
+```

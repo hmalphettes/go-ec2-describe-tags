@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
@@ -33,14 +34,16 @@ func main() {
 	var awsSecretAccessKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
 	var region = os.Getenv("AWS_REGION")
 	var instanceID = os.Getenv("EC2_INSTANCE_ID")
-	var delim = "="
+	var pdelim = "\n"
+	var kvdelim = "="
 	var queryMetadata = false
 
 	flag.StringVar(&awsAccessKey, "access_key", awsAccessKey, "AWS Access Key")
 	flag.StringVar(&awsSecretAccessKey, "secret_access_key", awsSecretAccessKey, "AWS Secret Access Key")
 	flag.StringVar(&region, "region", region, "AWS Region identifier")
 	flag.StringVar(&instanceID, "instance_id", instanceID, "EC2 instance id")
-	flag.StringVar(&delim, "delim", delim, "delimiter between key=value")
+	flag.StringVar(&pdelim, "p_delim", pdelim, "delimiter between key-value pairs")
+	flag.StringVar(&kvdelim, "kv_delim", kvdelim, "delimiter between key and value")
 	flag.BoolVar(&queryMetadata, "query_meta", queryMetadata, "query metadata service for instance_id and region")
 
 	flag.Parse()
@@ -82,14 +85,20 @@ func main() {
 	resp, err := svc.DescribeInstances(params)
 
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s", err)
+		os.Exit(1)
+	}
+	if len(resp.Reservations) == 0 {
+		os.Exit(1)
 	}
 	for idx := range resp.Reservations {
 		for _, inst := range resp.Reservations[idx].Instances {
 			// https: //godoc.org/github.com/awslabs/aws-sdk-go/service/ec2#Instance
+			s := []string{}
 			for _, tag := range inst.Tags {
-				fmt.Println(*tag.Key + "=" + *tag.Value)
+				s = append(s, *tag.Key+kvdelim+*tag.Value)
 			}
+			fmt.Println(strings.Join(s, pdelim))
 		}
 	}
 
